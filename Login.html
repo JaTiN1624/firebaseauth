@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="login.css">
+  <!-- <script src="form.js"></script> -->
+  <title>FireBaseAuthentication</title>
+</head>
+<body>
+  <div class="center-box" id="login-div">
+    <h2>LOGIN</h2>
+    <input type="email" class="text-field" id="login-email" name="login-email" placeholder="Enter Your Email " required><br>
+    <input type="Password" class="text-field" id="login-password" name="login-password" placeholder="Enter Your Password"required><br>
+    <button id="login-btn" class="btn-style">LOGIN</button><br>
+    <button id="reg-btn" class="an-btn">don't have an account? REGISTER</button>
+  </div>
+  <div  class="center-box1" id="register-div">
+    <h2 >REGISTER</h2>
+    <input type="email"  class="text-field" id="register-email" name="register-email" placeholder="Enter Your Email"required><br>
+    <input type="Password"  class="text-field" id="register-password" name="Register-password" placeholder="Enter Your Password"required><br>
+    <button id="register-btn"  class="btn-style">Register </button><br>
+    <button id="log-btn"  class="an-btn"> Already have an account? LOGIN</button>
+  </div>
+
+  <div id="result-box">
+    <h3 id="result"></h3><br>
+    <button id="log-out-btn" class="btn-style">LOG OUT</button>
+
+  </div>
+  
+ <script type="module">
+   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.9/firebase-app.js";
+   import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword ,signOut } from "https://www.gstatic.com/firebasejs/9.6.9/firebase-auth.js";
+  
+  const firebaseConfig = {
+    apiKey: "AIzaSyChvhAu_Yb71arxv9WjacrVZYhC9fIROqw",
+    authDomain: "fir-auth-dbe0f.firebaseapp.com",
+    projectId: "fir-auth-dbe0f",
+    storageBucket: "fir-auth-dbe0f.appspot.com",
+    messagingSenderId: "666517010125",
+    appId: "1:666517010125:web:1c710cafa0a54cc0119b84",
+    measurementId: "G-4LKEPDJ09D"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+
+
+   document.getElementById("reg-btn").addEventListener('click',function(){
+    document.getElementById("register-div").style.display="inline";
+    document.getElementById("login-div").style.display="none";
+  alert("welcome");
+   });
+   alert("welcome back");
+
+
+document.getElementById("log-btn").addEventListener('click',function(){
+  document.getElementById("register-div").style.display="none";
+  document.getElementById("login-div").style.display="inline";
+});
+
+
+
+
+
+// login section
+
+
+document.getElementById("login-btn").addEventListener('click',function(){
+     const  loginEmail = document.getElementById("login-email").value;
+     const loginPassword=document.getElementById("login-password").value;
+
+
+     signInWithEmailAndPassword(auth,  loginEmail, loginPassword)
+  .then((userCredential) => {
+    const user = userCredential.user;
+    document.getElementById("result-box").style.display="inline";
+    document.getElementById("login-div").style.display="none";
+    document.getElementById("result").innerHTML="Welcome Back<br>" + loginEmail+" was login successfully";
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    document.getElementById("result-box").style.display="inline";
+    document.getElementById("login-div").style.display="none";
+    document.getElementById("result").innerHTML="sorry ! <br>" +errorMessage;
+  });
+  
+});
+
+  //  sign up
+
+  document.getElementById("register-btn").addEventListener('click',function(){
+     const  registerEmail = document.getElementById("register-email").value;
+     const registerPassword=document.getElementById("register-password").value;
+
+
+     createUserWithEmailAndPassword(auth,  registerEmail, registerPassword)
+  .then((userCredential) => {
+    const user = userCredential.user;
+    document.getElementById("result-box").style.display="inline";
+    document.getElementById("register-div").style.display="none";
+    document.getElementById("result").innerHTML="Welcome <br>" + registerEmail+" Registered successfully";
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    document.getElementById("result-box").style.display="inline";
+    document.getElementById("register-div").style.display="none";
+    document.getElementById("result").innerHTML="sorry ! <br>" +errorMessage;
+  });
+  
+});
+  document.getElementById("log-out-btn").addEventListener('click',function(){
+    signOut(auth).then(() =>{
+
+      document.getElementById("result-box").style.display="none";
+    document.getElementById("register-div").style.display="inline";
+    }).catch((error)=>{
+
+      document.getElementById("result").innerHTML="sorry ! <br>" +errorMessage;
+    });
+
+  });
+ </script>
+</body>
+</html>
